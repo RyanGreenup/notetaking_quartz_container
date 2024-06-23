@@ -1,0 +1,31 @@
+# Move Admin port somewhere inconspicuous
+{
+    admin localhost:20191
+}
+
+# Serve the notes that are being rebuilt all the time
+# No need for this, it will be down on every rebuild.
+# :3820 {
+#     root * /public
+#     try_files {path} {path}.html {path}/ =404
+#     file_server
+#     encode gzip
+#
+#     handle_errors {
+#         rewrite * /{err.status_code}.html
+#         file_server
+#     }
+# }
+
+# Serve the Built Notes
+:8080 {
+    root * /public_host
+    try_files {path} {path}.html {path}/ =404
+    file_server
+    encode gzip
+
+    handle_errors {
+        rewrite * /{err.status_code}.html
+        file_server
+    }
+}

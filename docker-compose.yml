@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  quartz:
+    build: .
+    container_name: quartz
+    volumes:
+      # - /home/ryan/Notes/slipbox:/quartz/content
+      - /home/ryan/Notes/slipbox:/quartz/content:ro
+      - ./data/public:/quartz/public
+      - ./data/public_host:/quartz/public_host
+#   ports:
+#     - "3877:8080"
+    restart: unless-stopped
+    # The command to run
+    command: ["sh", "loop_quartz.sh"]
+  caddy_server:
+    build: .
+    container_name: quartz_caddy_server
+    volumes:
+      - ./data/public:/public
+      - ./data/public_host:/public_host
+    ports:
+      - "3877:8080"
+    userns_mode: "keep-id"
+    restart: unless-stopped
+    # The command to run
+    command: ["caddy", "run"]
